@@ -1,0 +1,45 @@
+name: Build and Release Thesis PDF
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📄 Compile LaTeX thesis
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: thesis.tex
+          latexmk_shell_escape: true
+
+      - name: 🕒 Generate CET/CEST time-based tag
+        id: tag
+        run: |
+          export TZ=Europe/Berlin
+          DATE_TAG=$(date +"%Y-%m-%dT%H-%M-%S-%Z")
+          echo "TAG=$DATE_TAG" >> $GITHUB_ENV
+          echo "tag_name=$DATE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: 🔖 Create and push Git tag
+        run: |
+          git config user.name "Latex Bot"
+          git config user.email "latex@bot.internal"
+          git tag ${{ env.TAG }}
+          git push origin ${{ env.TAG }}
+
+      - name: 🚀 Create GitHub Release and upload PDF
+        uses: softprops/action-gh-release@v2.3.2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          name: "Release ${{ steps.tag.outputs.tag_name }}"
+          files: thesis.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
