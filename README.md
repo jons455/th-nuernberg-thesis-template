@@ -1,4 +1,4 @@
-# 🎓 Master's Thesis LaTeX Template – TH Nürnberg
+# LaTeX Thesis Template – TH Nürnberg
 
 A professional, ready-to-use LaTeX template for writing your thesis at Technische Hochschule Nürnberg Georg Simon Ohm.
 Includes automatic PDF building with GitHub Actions, pre-configured bibliography system, abbreviations glossary and comprehensive documentation.
@@ -8,16 +8,16 @@ Based on [Korbinian Riedhammer's thesis template](https://github.com/riedhammer/
 
 ## ✨ Features
 
-- ✅ **Professional LaTeX Setup** - Pre-configured for German academic theses
-- ✅ **10 Pre-Structured Chapters** - Introduction, literature review, background, methodology, results, contributions, discussion, conclusion, and appendices
-- ✅ **Automatic PDF Builds** - GitHub Actions compiles PDF on every push
-- ✅ **Bibliography System** - BibTeX pre-configured with TH Nürnberg style (wmaainf.bst)
-- ✅ **Abbreviations/Glossary** - Built-in acronym management with auto-expansion
-- ✅ **Code Highlighting** - Syntax highlighting for Go, JSON and generic code
-- ✅ **Legal Documents** - Built-in handling for official declaration (Prüfungsrechtliche Erklärung)
-- ✅ **Comprehensive Comments** - Inline documentation explaining every section
-- ✅ **Easy Customization** - Single metadata section to update your information
-- ✅ **Local & Cloud Builds** - Compile locally with VS Code or automatically on GitHub
+- **Professional LaTeX Setup** - Pre-configured for German academic theses
+- *10 Pre-Structured Chapters** - Introduction, literature review, background, methodology, results, contributions, discussion, conclusion, and appendices
+- **Automatic PDF Builds** - GitHub Actions compiles PDF on every push
+- **Bibliography System** - BibTeX pre-configured with TH Nürnberg style (wmaainf.bst)
+- **Abbreviations/Glossary** - Built-in acronym management with auto-expansion
+- **Code Highlighting** - Syntax highlighting for Go, JSON and generic code
+- **Legal Documents** - Built-in handling for official declaration (Prüfungsrechtliche Erklärung)
+- **Comprehensive Comments** - Inline documentation explaining every section
+- **Easy Customization** - Single metadata section to update your information
+- **Local & Cloud Builds** - Compile locally with VS Code or automatically on GitHub
 
 ---
 
@@ -77,17 +77,17 @@ Push to GitHub and your PDF builds automatically! 🎉
 
 #### Installation (Windows/Mac/Linux)
 
-1. **Install [MiKTeX](https://miktex.org/)**
+1. **Install MiKTeX**
    - Download from https://miktex.org/
    - Provides LaTeX compiler and `latexmk`
    - Follow installer instructions
 
-2. **Install [Perl](https://strawberryperl.com/)**
+2. **Install Perl**
    - Download from https://strawberryperl.com/
    - Required by `latexmk` for multi-pass compilation
    - Follow installer instructions
 
-3. **Install [VS Code](https://code.visualstudio.com/)**
+3. **Install VS Code**
    - Download from https://code.visualstudio.com/
    - Free code editor from Microsoft
 
@@ -211,16 +211,7 @@ Edit `thesis.tex` lines 20-45 to personalize your thesis:
 | `\unternehmen` | Company name (optional) | "Acme Corporation" |
 | `\keywords` | Search keywords (5-7) | "keyword1, keyword2, ..." |
 
-### 2. Update Your Logo
-
-Replace `figures/cover_ohm_logo.png` with your university/company logo.
-
-The logo path is set in `thesis.tex`:
-```latex
-\newcommand{\logo}{official_documents/cover_ohm_logo.png}
-```
-
-### 3. Add Abbreviations
+### 2. Add Abbreviations
 
 Edit `abbreviations.tex` to add your domain-specific acronyms:
 
@@ -230,27 +221,7 @@ Edit `abbreviations.tex` to add your domain-specific acronyms:
 \newacronym{nlp}{NLP}{Natural Language Processing}
 ```
 
-Use in your text:
-```latex
-The field of \gls{ml} is rapidly evolving, with \gls{ai} applications everywhere.
-```
-
-First use expands: "Machine Learning (ML)"  
-Later uses: "ML"
-
-### 4. Customize Faculty/University
-
-In `cover.tex` line 7, change:
-```latex
-\large{Fakultät Informatik}\\[1cm]
-```
-
-To your faculty:
-```latex
-\large{Fakultät Wirtschaft und Medien}\\[1cm]
-```
-
-### 5. Add or Remove Chapters
+### 3. Add or Remove Chapters
 
 In `thesis.tex`, modify the main matter section (around line 357):
 
@@ -274,7 +245,7 @@ Each chapter file (e.g., `1_introduction.tex`) should follow this structure:
 \chapter{Introduction}
 \label{ch:introduction}
 
-\section{Background}
+\section{Section}
 Write your first section here. You can reference figures, tables, and citations.
 
 \subsection{Subsection}
@@ -316,8 +287,10 @@ Continue your chapter...
 
 #### Citations & References
 ```latex
-\cite{smith2023}                         % Simple citation
+\cite{smith2023}                        % Simple citation
 \cite[S. 42]{smith2023}                 % Citation with page number (German)
+\cite[S. 42--45]{smith2023}             % Citation with page range (German)
+\cite[S. 42]{smith2023}                 % Citation with page number (English)
 \cite[pp. 42--45]{smith2023}            % Citation with page range (English)
 
 \ref{fig:myimage}                       % Reference to label
@@ -417,17 +390,12 @@ Multiple sources \cite{smith2023, author2024} suggest...
 
 ## 🏆 Building Your Thesis
 
-### Build Locally (with MiKTeX + Perl)
+### Build Locally (with MiKTeX + Perl) in VS Code
 
-```bash
-# Single command (recommended)
-latexmk -pdf thesis.tex
-
-# Or with VS Code
-# - Open thesis.tex
-# - Press Ctrl+Alt+B (or click "Build" button)
-# - View PDF in preview panel
-```
+- Open `thesis.tex`.
+- Press Ctrl+Alt+X or click on the LaTeX Workshop extension.
+- Click on "Build LaTeX project".
+- View `thesis.pdf` in preview.
 
 ### Build on GitHub (Automatic)
 
@@ -439,149 +407,16 @@ git push origin main
 ```
 
 2. GitHub automatically:
-   - ✅ Compiles your LaTeX
-   - ✅ Generates PDF
-   - ✅ Creates a Release
-   - ✅ Uploads PDF
+   - Compiles your LaTeX
+   - Generates PDF
+   - Creates a Release
+   - Uploads PDF
 
-3. Download from [Releases](../../releases)
-
----
-
-## 📋 Legal Documents
-
-### Official Declaration (Prüfungsrechtliche Erklärung)
-
-This template includes handling for the required official declaration. Choose ONE of two options:
-
-#### Option 1: Print Version (For Printing & Hand Signing)
-
-1. Download form: https://www.th-nuernberg.de/fileadmin/global/Public_Docs/SB/SB_0009_FO_Pruefungsrechtliche_Erklaerung_und_Erklaerung_zur_Veroeffentlichung_der_Abschlussarbeit_public.pdf
-2. Print the PDF
-3. Sign by hand
-4. Scan the signed document
-5. Save to: `official_documents/Appendix_Pruefungsrechtliche_Erklaerung_Printversion.pdf`
-6. In `thesis.tex` line 296, uncomment the print version line
-
-#### Option 2: Digital Version (Pre-Scanned with Original Signature)
-
-1. Download form (link above)
-2. Print (do NOT sign yet)
-3. Sign by hand
-4. Scan with original signature
-5. Save to: `official_documents/Appendix_Pruefungsrechtliche_Erklaerung_Digitalversion.pdf`
-6. In `thesis.tex` line 298, uncomment the digital version line (default)
-
----
-
-## 🐛 Troubleshooting
-
-### "Undefined references" Warning
-
-**Problem:** LaTeX warns "Reference `ch:xxx' undefined"
-
-**Cause:** LaTeX requires multiple passes to resolve cross-references
-
-**Solution:**
-```bash
-latexmk -pdf thesis.tex  # Runs 2-3 passes automatically
-```
-
-Or in VS Code: Just click "Build" - it handles this automatically.
-
-### "File not found" Error
-
-**Problem:** `! LaTeX Error: File 'figures/myimage.png' not found`
-
-**Solution:**
-- Check filename spelling exactly
-- Use relative paths (not absolute): `figures/myimage.png`
-- Ensure file exists in the folder
-- Try `figures/my_image.png` (no spaces)
-
-### Bibliography Not Showing
-
-**Problem:** Citations don't appear in PDF
-
-**Solution:**
-- Check `refs.bib` syntax (mismatched braces)
-- Verify key matches in `\cite{}` command
-- Rebuild: `latexmk -pdf -g thesis.tex` (force rebuild)
-
-### "Undefined control sequence"
-
-**Problem:** `! Undefined control sequence \mycommand`
-
-**Solution:**
-- Check spelling: `\chapter` not `\Chapter`
-- Check package is loaded: `\usepackage{package}`
-- Check for missing braces: `{like this}`
-
-### PDF Build Fails on GitHub
-
-**Problem:** Actions show failure in build
-
-**Solution:**
-1. Check Actions tab → View logs
-2. Look for LaTeX error messages
-3. Common issues:
-   - Missing closing braces `}`
-   - Invalid path in `\input{}` or `\include{}`
-   - Syntax error in `refs.bib`
-   - Special characters not properly escaped
-
----
-
-## 💡 Best Practices
-
-### Writing
-
-✅ **DO:**
-- Commit often: `git commit` frequently
-- Use meaningful commit messages: "Add methodology chapter"
-- Write incrementally (don't wait until the end)
-- Use labels for easy referencing: `\label{sec:background}`
-- Keep chapters manageable (20-50 pages each)
-- Spell-check regularly
-
-❌ **DON'T:**
-- Use absolute file paths
-- Store large PDF files in the repo
-- Mix figures and code in same folder
-- Leave chapters over 100 pages
-- Commit build artifacts (*.pdf, *.aux)
-- Use special characters in file names
-
-### Organization
-
-✅ **DO:**
-- Organize figures by chapter: `figures/ch1_*, figures/ch2_*`
-- Use consistent file naming: `chapter_name_description.png`
-- Add descriptive captions to all figures
-- Comment your LaTeX code for clarity
-- Update bibliography as you read papers
-
-❌ **DON'T:**
-- Mix content from different chapters in one file
-- Use generic names: `image1.png`, `figure.pdf`
-- Leave figures without captions
-- Store working drafts in main folders
-
----
-
-## 🔗 Useful Resources
-
-- **Overleaf LaTeX Tutorial:** https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes
-- **BibTeX Guide:** https://www.ctan.org/pkg/bibtex
-- **TeX Stack Exchange:** https://tex.stackexchange.com/
-- **LaTeX Workshop Docs:** https://github.com/James-Yu/LaTeX-Workshop
-- **MiKTeX Manual:** https://miktex.org/manual/
+3. Download from [Github Releases](../../releases)-.
 
 ---
 
 ## 📄 License
-
-This template is based on a LaTeX template originally created for academic use and is provided under the **MIT License**.
 
 See [LICENSE.md](./LICENSE.md) for details.
 
@@ -589,19 +424,16 @@ See [LICENSE.md](./LICENSE.md) for details.
 
 ## 🤝 Contributing
 
-Found a bug? Have an improvement? Contributions welcome!
-
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ---
 
 ## 📞 Support
 
-- Report Issues: Open an issue on GitHub
-- Questions: Check existing issues or start a discussion
+See [Github Issues](../../issues).
 
 ---
 
-##🎓 Happy thesis writing!
+## 🎓 Happy thesis writing!
 
 Remember: Your thesis is a marathon, not a sprint. Take your time, write clearly and ask for feedback early and often.

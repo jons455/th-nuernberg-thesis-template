@@ -1,7 +1,7 @@
 # Copyright Notice and License
 
 MIT License
-Copyright 2025 Leon Sommer.
+Copyright 2025 Leon Sommer
 
 This thesis template was created as part of the Master’s degree program in Information Systems (Wirtschaftsinformatik) at the Nuremberg Institute of Technology (Technische Hochschule Nürnberg Georg Simon Ohm).
 
