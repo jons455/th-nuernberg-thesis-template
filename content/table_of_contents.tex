@@ -1,0 +1,74 @@
+\chapter{Introduction}
+\section{Motivation}
+\section{Problem Statement}
+\subsection{Limitations of Current Neuromorphic Benchmarks}
+\subsection{Challenges in Neural Motor Control}
+\section{Objectives}
+\subsection{Integration of Motor Control Tasks into NeuroBench}
+\subsection{End-to-End Comparison: PI vs. Neural Controller}
+\section{Thesis Structure}
+
+% Chapter 2
+\chapter{Theoretical Background}
+\section{Electric Drive Control}
+\subsection{Field Oriented Control (FOC)}
+\subsection{Classical PI Control Fundamentals}
+\section{Neuromorphic Engineering}
+\subsection{Event-Based Processing}
+\subsection{Spiking Neural Networks (SNNs)}
+\section{The NeuroBench Framework}
+\subsection{Architecture and Goals}
+\subsection{Existing Benchmarks and Metrics}
+\section{Target Hardware: Brainchip Akida}
+\subsection{Architecture Overview}
+\subsection{MetaTF and Development Workflow}
+
+% Chapter 3
+\chapter{System Design and Methodology}
+\section{Concept: Neural Replication of PI Controllers}
+\subsection{Supervised Learning Strategy}
+\subsection{Multivariate Regression for Control Signals ($u_d, u_q$)}
+\section{The End-to-End Pipeline}
+\subsection{From Simulation to Hardware Deployment}
+\section{Dataset Generation}
+\subsection{Simulation Environment setup}
+\subsection{Data Granularity and Preprocessing}
+\section{Definition of Metrics}
+\subsection{Task Metrics (Control Performance)}
+% (Overshoot, Settling Time, Steady-state Error)
+\subsection{Algorithmic Metrics (Model Complexity)}
+% (Accuracy, Parameter Count)
+\subsection{Hardware Metrics (Efficiency)}
+% (Latency, Power Consumption, Memory Footprint)
+
+% Chapter 4
+\chapter{Implementation}
+\section{Simulation and Data Acquisition}
+\section{Neural Network Implementation}
+\subsection{Model Architecture Design}
+\subsection{Training Process and Validation}
+\section{Hardware Deployment on Brainchip Akida}
+\subsection{Quantization and Conversion}
+\subsection{Integration via Raspberry Pi Host}
+\section{NeuroBench Integration}
+\subsection{Software Architecture for the New Task}
+\subsection{Automating the Benchmark Loop}
+
+% Chapter 5
+\chapter{Evaluation and Results}
+\section{Experimental Setup}
+\section{Control Performance Analysis}
+\subsection{Comparison: Classical PI vs. Neural Approximation}
+\section{Hardware Efficiency Analysis}
+\subsection{Latency and Throughput}
+\subsection{Power Consumption on Neuromorphic Hardware}
+\section{Discussion}
+\subsection{Trade-offs between Precision and Efficiency}
+\subsection{Feasibility for Real-Time Industrial Applications}
+
+% Chapter 6
+\chapter{Conclusion and Future Work}
+\section{Summary of Contributions}
+\section{Future Work}
+\subsection{Extension to Recurrent Architectures}
+\subsection{Closing the Loop with Direct Hardware Control}

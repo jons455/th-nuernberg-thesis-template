@@ -1,0 +1,14 @@
+\section{Research Questions}
+Based on the identified gap, this thesis aims to answer the following \textbf{Research Question (RQ)}:
+
+\begin{quote}
+    \textit{How can a standardized, hardware-agnostic benchmark pipeline be architected to enable the rigorous, closed-loop evaluation of Spiking Neural Networks in electric drive control?}
+\end{quote}
+
+To address this, the research is guided by three \textbf{Working Hypotheses} which act as the foundation for the methodology:
+
+\begin{description}
+    \item[Hypothesis 1 (The Implementation):] A synchronous software interface layer can successfully bridge discrete-event neuromorphic inference and continuous-time motor dynamics without violating the hard real-time latency constraints of the control loop.
+    \item[Hypothesis 2 (The Methodology):] Unifying conflicting performance indicators from Control Theory (e.g., overshoot, stability) and Neuromorphic Computing (e.g., sparsity, synaptic operations) into a single framework provides the necessary quantitative basis to assess industrial viability.
+    \item[Hypothesis 3 (The Validation):] A Spiking Neural Network (SNN) controller, trained via imitation learning, can replicate the dynamic performance of a PI baseline with negligible degradation in control quality while demonstrating superior computational sparsity.
+\end{description}

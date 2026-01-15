@@ -1,0 +1,51 @@
+\chapter{Introduction}
+\section{Motivation}
+\subsection{The Context: The Energy-Intelligence Paradox in Industrial Drives}
+Electric motor systems currently consume a significant portion of global electricity, making their efficiency a critical factor in achieving international sustainability targets \cite{abb_achieving_2023}. While hardware efficiency for Permanent Magnet Synchronous Motors (PMSMs) has reached saturation points exceeding 96\% (IE4/IE5 standards), the next frontier for optimization lies in intelligent, adaptive control strategies \cite{edgeimpulse_revolutionizing_2024}. Advanced algorithms offer the theoretical ability to optimize torque generation and minimize losses dynamically. However, the deployment of these complex algorithms introduces an \textbf{"Energy-Intelligence Paradox"}: the computational power required to execute AI-based control on standard embedded hardware often consumes more energy than the algorithm saves in motor efficiency \cite{lin_energy_2025}. Consequently, the industry faces a conflict between the demand for sophisticated "Industry 4.0" control and the strict energy budgets of edge devices.
+
+\subsection{The Problem: The Von Neumann Bottleneck and the Latency Wall}
+The fundamental barrier to resolving this paradox is the Von Neumann architecture inherent in standard Microcontrollers (MCUs) and Digital Signal Processors (DSPs). In high-dynamic drive control, the system must adhere to strict sampling rates (typically 20 kHz), leaving a latency budget of merely 50 $\mu$s for sensing, processing, and actuation \cite{ramamoorthy_fcls_2022}. Standard architectures suffer from the "Memory Wall," where the physical separation of processing and memory units creates a bottleneck; data movement alone accounts for a vast majority of the energy consumption compared to the actual floating-point operations \cite{coluccio_exploration_2023}. While classical PI controllers fit within this budget, mitigating delay and coupling effects in high-speed PMSM drives using advanced multivariable control requires computational resources that often violate these hard real-time constraints on standard processors \cite{tasnim_mitigating_2024, li_current_2024}. Thus, a hardware architecture capable of high-complexity processing with microsecond-level latency is required.
+
+\subsection{Neuromorphic Computing}
+Neuronal processing, be it through Artificial Neural Networks (ANNs) or Spiking Neural Networks (SNNs), offers the potential to significantly increase the flexibility, robustness, and versatility of the control loop compared to rigid classical structures. However, to make this viable at the edge, efficiency is paramount.
+
+Neuromorphic computing, specifically the implementation of Spiking Neural Networks (SNNs) on event-based hardware, presents a viable solution to these architectural limitations \cite{chowdhury_neuromorphic_2025}. By co-locating memory and processing (In-Memory Computing) and utilizing asynchronous, event-driven execution, neuromorphic hardware circumvents the Von Neumann bottleneck. Empirical studies have demonstrated that neuromorphic controllers can achieve control latencies competitive with CPUs while reducing energy consumption by orders of magnitude in robotic tasks \cite{amaya_neuromorphic_2024}. Furthermore, SNNs have shown superior efficiency in decoding neural signals with sub-10 ms latency, bridging the gap between accuracy and operational efficiency \cite{hueber_benchmarking_2024}. This architecture aligns naturally with the requirements of electric drives, theoretically offering the necessary throughput for high-speed loops without the associated energy penalty.
+
+
+\section{Problem Statement: The Absence of Closed-Loop Benchmarking}
+Despite this theoretical fit, a significant "Validation Crisis" exists. 
+Rigorous benchmarking is vital to lower the acceptance barrier of such technologies in the industrial landscape, where quantitative analysis drives strategic decisions towards technology adoption.
+Current neuromorphic benchmarks, such as NeuroBench, have established important baselines but are predominantly focused on open-loop tasks or static datasets \cite{yik_neurobench_2025}. These frameworks fail to adequately measure critical control metrics—such as stability, overshoot, and end-to-end latency—in a closed-loop setting where the controller’s output immediately influences the system’s future state \cite{milde_neuromorphic_2022, stewart_closed-loop_2015}. Additionally, the variability in hardware implementations makes cross-platform reproducibility difficult \cite{pedersen_neuromorphic_2024, diamond_comparing_2016}. While high-fidelity software simulators for drives exist, such as \textit{gym-electric-motor} (GEM) \cite{balakrishna_gym-electric-motor_2021}, there is currently no standardized interface layer connecting these simulators with neuromorphic hardware to quantify the trade-off between control quality and energy efficiency. This thesis addresses this infrastructural deficit by designing an end-to-end benchmarking pipeline.
+
+\section{Research Question}
+Based on the identified gap, this thesis aims to answer the following \textbf{Research Question (RQ)}:
+
+\begin{quote}
+    \textit{How can a standardized, hardware-agnostic benchmark pipeline be architected to enable the rigorous, closed-loop evaluation of Spiking Neural Networks in electric drive control?}
+\end{quote}
+
+To address this, the research is guided by three \textbf{Working Hypotheses} which act as the foundation for the methodology:
+
+\begin{description}
+    \item[Hypothesis 1 (The Implementation):] A synchronous software interface layer can successfully bridge discrete-event neuromorphic inference and continuous-time motor dynamics without violating the hard real-time latency constraints of the control loop.
+    \item[Hypothesis 2 (The Methodology):] Unifying conflicting performance indicators from Control Theory (e.g., overshoot, stability) and Neuromorphic Computing (e.g., sparsity, synaptic operations) into a single framework provides the necessary quantitative basis to assess industrial viability.
+    \item[Hypothesis 3 (The Validation):] A Spiking Neural Network (SNN) controller, trained via imitation learning, can replicate the dynamic performance of a PI baseline with negligible degradation in control quality while demonstrating superior computational sparsity.
+\end{description}
+
+\section{Scope and Delimitations}
+To ensure the feasibility of this study within the timeframe of a Master's Thesis, the scope is explicitly bounded by the following delimitations:
+
+\begin{itemize}
+    \item \textbf{Simulation-Only Validation:} The benchmark is developed and evaluated entirely within a high-fidelity software simulation environment. Deployment on physical neuromorphic hardware (e.g., Loihi 2) or physical motor test benches is outside the scope of this work, focusing instead on \textbf{hardware-agnostic complexity metrics}.
+    \item \textbf{Field-Oriented Current Control:} The control task is limited to the inner current control loop ($i_d, i_q$) of a PMSM. Outer control loops (speed/position) and sensorless estimation techniques are excluded to isolate the core latency-critical dynamics.
+    \item \textbf{Imitation Learning Focus:} The training methodology is restricted to supervised Imitation Learning from a PID expert. Reinforcement Learning (RL) or direct evolutionary strategies are not considered in this iteration \textbf{to decouple architectural evaluation from training instability.}
+\end{itemize}
+
+\section{Strcuture}
+The remainder of this thesis is structured as follows: 
+\textbf{Chapter 2} establishes the theoretical foundations of PMSM control and Neuromorphic Engineering. 
+\textbf{Chapter 3} details the methodological concept and the design of the benchmarking framework. 
+\textbf{Chapter 4} documents the technical implementation of the end-to-end pipeline and the software stack. 
+\textbf{Chapter 5} presents the experimental results across dynamic and efficiency scenarios. 
+\textbf{Chapter 6} discusses the findings, interpreting the trade-offs found. 
+Finally, \textbf{Chapter 7} concludes the work and outlines future research directions.

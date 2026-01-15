@@ -1,0 +1,30 @@
+\subsubsection{Justification of Approach}
+The selection of a simulation-based methodology over hardware-in-the-loop experimentation is justified by three considerations:
+
+\begin{description}
+    \item[Reproducibility:] Physical motor test benches introduce measurement noise, component tolerances, and environmental variations that impede reproducible benchmarking. The NeuroBench framework explicitly emphasizes reproducible evaluation conditions. A simulation-based approach using validated motor models ensures that performance differences can be attributed solely to the control algorithm.
+    \item[Accessibility:] Neuromorphic hardware platforms such as Intel Loihi 2 or SpiNNaker 2 remain limited in availability. By employing software-based SNN simulation with hardware-agnostic metrics (Synaptic Operations, sparsity), the benchmark remains accessible to researchers without specialized hardware access.
+    \item[Systematic Comparison:] Simulation enables controlled variation of operating conditions, disturbance profiles, and controller architectures. This systematic approach is essential for establishing the performance envelope of neuromorphic controllers relative to conventional baselines.
+\end{description}
+
+\subsubsection{Motor Model Selection}
+The benchmark employs a permanent magnet synchronous motor (PMSM) as the reference plant. PMSMs represent the dominant actuator technology in industrial servo drives and robotics \cite{boldea_electric_2017}. Their nonlinear dynamics and stringent real-time requirements make them an appropriate challenge for neuromorphic control evaluation.
+
+The motor dynamics are modeled in the rotating direct-quadrature ($dq$) reference frame. The voltage equations follow the standard formulation:
+
+\begin{subequations}
+\label{eq:pmsm_voltage}
+\begin{align}
+    u_d &= R_s \cdot i_d + L_d \cdot \frac{di_d}{dt} - \omega_{el} \cdot L_q \cdot i_q \\
+    u_q &= R_s \cdot i_q + L_q \cdot \frac{di_q}{dt} + \omega_{el} \cdot (L_d \cdot i_d + \Psi_{PM})
+\end{align}
+\end{subequations}
+
+The electromagnetic torque is computed as:
+\begin{equation}
+    T_{em} = \frac{3}{2} \cdot p \cdot [\Psi_{PM} \cdot i_q + (L_d - L_q) \cdot i_d \cdot i_q]
+    \label{eq:torque}
+\end{equation}
+
+\subsection{Validation Strategy}
+The pipeline is validated via a "Proof of Concept" comparison. The SNN controller is tested on the Step Response scenario. The evaluation aims to determine if SNNs can achieve tracking errors within a comparable range (<5\%) of the baseline, and to quantify the efficiency gains realized at this performance level.

@@ -299,9 +299,9 @@
 % spacing between paragraphs
 \setlength{\parskip}{0pt}
 
-\include{content/0A_abstract}\cleardoublepage  % Abstract
+\include{content/0_abstract}\cleardoublepage  % Abstract
 
-\include{content/0B_acknowledgements}\cleardoublepage  % Acknowledgements
+%\include{content/0B_acknowledgements}\cleardoublepage  % Acknowledgements
 
 \tableofcontents  % Auto-generated table of contents
 
@@ -336,21 +336,9 @@
 
 \mainmatter
 
-\include{content/1_introduction}  % Chapter 1: Introduction
-
-\include{content/2_related_work}  % Chapter 2: Related Work
-
-\include{content/3_theoretical_background}  % Chapter 3: Theoretical Background
-
-\include{content/4_methodology}  % Chapter 4: Methodology
-
-\include{content/5_results}  % Chapter 5: Results
-
-\include{content/6_contributions}  % Chapter 6: Contributions
-
-\include{content/7_discussion}  % Chapter 7: Discussion
-
-\include{content/8_conclusion}  % Chapter 8: Conclusion
+\include{content/1_intro}  % Chapter 1: Introduction
+\include{content/Theoretical_basics/0_motor_control_basics}  % Chapter
+\include{content/Theoretical_basics/1_electric_motor_control_basics}
 
 % ============================================================================
 % BIBLIOGRAPHY AND APPENDICES
@@ -363,7 +351,7 @@
 \bibliography{refs}\cleardoublepage  % Load bibliography from refs.bib
 
 \appendix  % Start appendix section (uses letters: A, B, C instead of 1, 2, 3)
-\include{content/9_appendix}  % Appendix content
+%\include{content/9_appendix}  % Appendix content
 
 % ============================================================================
 % END OF DOCUMENT

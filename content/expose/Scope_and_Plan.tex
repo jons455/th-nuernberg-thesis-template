@@ -1,0 +1,57 @@
+\section{Scope and Delimitations}
+To ensure the feasibility of this study within the timeframe of a Master's Thesis, the scope is explicitly bounded by the following delimitations:
+
+\begin{itemize}
+    \item \textbf{Simulation-Only Validation:} The benchmark is developed and evaluated entirely within a high-fidelity software simulation environment. Deployment on physical neuromorphic hardware (e.g., Loihi 2) or physical motor test benches is outside the scope of this work, focusing instead on \textbf{hardware-agnostic complexity metrics}.
+    \item \textbf{Field-Oriented Current Control:} The control task is limited to the inner current control loop ($i_d, i_q$) of a PMSM. Outer control loops (speed/position) and sensorless estimation techniques are excluded to isolate the core latency-critical dynamics.
+    \item \textbf{Imitation Learning Focus:} The training methodology is restricted to supervised Imitation Learning from a PID expert. Reinforcement Learning (RL) or direct evolutionary strategies are not considered in this iteration \textbf{to decouple architectural evaluation from training instability.}
+\end{itemize}
+
+\section{Main Contributions}
+This thesis contributes to the intersection of Control Engineering and Neuromorphic Computing by delivering:
+
+\begin{enumerate}
+    \item \textbf{End-to-End Pipeline:} An open-source, Gym-compatible framework linking \textit{gym-electric-motor} with SNN inference engines \textbf{via the Neuromorphic Intermediate Representation (NIR)}, solving the "Interface Layer" gap.
+    \item \textbf{Neuromorphic Control Metrics:} A formalized set of evaluation metrics that normalizes control engineering standards (ITAE, Settling Time) alongside neuromorphic efficiency (Sparsity, SyOps).
+    \item \textbf{Baseline Analysis:} A systematic performance comparison providing empirical evidence of the capability of SNNs to \textbf{replicate} PI behavior in continuous time domains \textbf{while quantifying the trade-off between control precision and computational sparsity.}
+\end{enumerate}
+
+\section{Project Plan}
+The thesis is scheduled for a duration of six months. The work is divided into five main work packages (WP):
+
+\begin{description}
+    \item[WP1: Literature \& Setup (Month 1):] Analysis of state-of-the-art SNN training methods; setup of the \textit{gym-electric-motor} and \textit{NeuroBench} environments.
+    \item[WP2: Pipeline Development (Month 2):] Implementation of the "Interface Layer" (Wrapper) to synchronize the continuous plant with the discrete SNN emulator.
+    \item[WP3: SNN Implementation (Month 3):] Design of the LIF network architecture and execution of Imitation Learning (pre-training) using PI trajectories.
+    \item[WP4: Evaluation \& Tuning (Month 4):] Execution of benchmark scenarios (Step Response, Operating Point Sweep) and hyperparameter optimization.
+    \item[WP5: Writing \& Finalization (Months 5-6):] Interpretation of results, metric analysis, and writing of the thesis document.
+\end{description}
+
+\section{Honest Project Plan}
+\begin{description}
+    \item[WP1: Simulation Environment \& Baseline (Completed):] 
+    The \textit{gym-electric-motor (GEM)} simulation framework has been configured with validated PMSM parameters matching the reference MATLAB/Simulink model. A comprehensive metrics framework based on NeuroBench specifications has been implemented, including control performance metrics (ITAE, settling time, overshoot) and neuromorphic efficiency metrics (SyOps, activation sparsity). PI-controller baseline trajectories have been generated across multiple operating points, achieving tracking errors below 0.01\,A. This foundation enables immediate integration with the neuromorphic benchmark framework.
+    
+    \item[WP2: NeuroBench Integration \& Interface Development (Week 1):] 
+    Integration of the NeuroBench \texttt{2025\_GC} branch, which provides native closed-loop benchmark support via the \texttt{BenchmarkClosedLoop} class. Development of a \texttt{PMSMEnv} wrapper adapting the GEM environment to NeuroBench's Gymnasium-compatible interface. Implementation of the \texttt{SNNTorchAgent} wrapper providing stateful neuron management across control timesteps. Validation of the complete pipeline using the existing PI-controller as a reference agent.
+    
+    \item[WP3: SNN Training \& Closed-Loop Validation (Week 2):] 
+    Design of a lightweight LIF network architecture using the \textit{snnTorch} framework. Execution of supervised Imitation Learning using trajectory data from the validated PI-controller. Integration with \texttt{BenchmarkClosedLoop} for closed-loop stability verification. Generation of initial benchmark results comparing PI-controller against SNN controller on step response scenarios.
+    
+    \item[WP4: Systematic Evaluation \& Baseline Comparison (Week 2-3):] 
+    Execution of the complete benchmark scenario suite: Step Response, Operating Point Sweep (including field-weakening region), and Disturbance Rejection. Comparison of three controller architectures: PI (conventional baseline), ANN (dense neural network), and SNN (spiking neural network). Quantification of neuromorphic efficiency metrics and estimation of platform-specific energy consumption using published Loihi~2 and SpiNNaker~2 characterizations.
+    
+    \item[WP5: Documentation \& Contribution Packaging (Week 3):] 
+    Export of trained SNN models to Neuromorphic Intermediate Representation (NIR) format for hardware portability demonstration. Statistical analysis of benchmark results with confidence intervals. Preparation of the PMSM current control task as a reproducible NeuroBench contribution. Finalization of thesis methodology and results chapters with publication-ready figures.
+    
+    \item[WP6: Thesis Completion (Continuous):] 
+    Parallel documentation of methodology and implementation decisions throughout all work packages. Integration of benchmark results into the thesis narrative. Critical discussion of limitations regarding simulation fidelity and energy estimation accuracy. Finalization of the thesis document.
+\end{description}
+\section{Thesis Outline}
+The remainder of this thesis is structured as follows: 
+\textbf{Chapter 2} establishes the theoretical foundations of PMSM control and Neuromorphic Engineering. 
+\textbf{Chapter 3} details the methodological concept and the design of the benchmarking framework. 
+\textbf{Chapter 4} documents the technical implementation of the end-to-end pipeline and the software stack. 
+\textbf{Chapter 5} presents the experimental results across dynamic and efficiency scenarios. 
+\textbf{Chapter 6} discusses the findings, interpreting the trade-offs found. 
+Finally, \textbf{Chapter 7} concludes the work and outlines future research directions.

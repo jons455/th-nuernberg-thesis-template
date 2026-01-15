@@ -1,0 +1,39 @@
+Ich habe erstmal alle möglichen Bücher zu regler herausgesucht und die ein bisschen durchgearbeitet um die grundprobelmatik und das tehma grundlegend zu verstehen.Auperdem habe ich Videos von Texas Industries oderso angeschuat und mir allgemein viel dzau reingelsesn. 
+Es gibt eden Freitag eine Runde mit Leuten die in einem ähnlcihen Thema gerade an einer thematik dran sind um sich dabei einfahvc auszutauschen. 
+Als nächstes habe ich bei burger engineering eine vorstellung gehabt ud wir haben uns unterhalten inwiefern sie mich mit daten unetrstützen können. Dabei aht sich leider  herausgestellt dass sie die daten nicht in der erforderlichen frwuenz samplen können bzw an anderen Problemen arbeieten, 
+Als nächstes war das Ziel das PMSM Modell dass ich von ElLSYS bekommen habe zu verstehen und daraus daten zu erzeugen.
+Edge IMpulse
+MIthilfe dieser Daten dann eine geeigente Form für Edge Impuls ezu erstellen und diese dann zutranieren. Dieses Modell auf Edge Imoulse soll dann in der Lage sein den PI-Regler nachzuahmnen. 
+Des Weiteren müssen die Datne ni eine geeignete Form vorbereitet werden als Trainings und Testdaten. Außerdem müssen die Labels festgelegt werden die Vorhergesagtw erden sollen. 
+Die Daten stehen auch schon aber atuell kann nur ein Label in Edge Impulse vorhergesagt werden 
+Edge Impulse unterstützt keine multivariante regression udn deshalb ist es nicht möglich den regler 1:1 abzubilden. 
+Man könnte das mit costum blocks oder modellen umeghen aber das wäre overengineered weil es geht hier nur darum zu zeigen dass man einen Regler mit einem neuronalen netz theoretischen abbilden kann. deswegen konzentriere ich mich jetzt einfach mal auf 
+Der Plan in Edge Impulse ist es jetzt erstmal einen Proof of Concept zu machen um pberhaupt zu sehen ob einfache Imitation eines Reglers möglich sind. Dafür werden u_d und u_q heweils einzeln als zielvariablen verwendet um zu sehen pob das verhalten gelernt werden can. 
+Dafür werd eich jetzt ertsmal im csv wizard das neue format angeben und sehen ob das klappt. Das ursprüngliche problem war dass man in EI keine multivariante Regression machen kann. warum auch immer
+Das Problem war tatsächlich dass ich den Zielwert nie bei den traningsdaten mitgegeben habe und das ist nie aufgefallen. für die Werte i_d und i_q jeweils. alkso wurden alle skripte und die datensätze jetzt ehweils um das ergänzt 
+
+
+GEM 
+Das Ziel mit GEM ist es, das Modell der Regelung einer PMSM nachzubilden, sodass die Simulation ein genaues Abbild von der MATLAB-Simulation ist. Das würde uns erlauben, nur in Python zu bleiben und darin alles abzubilden. Außerdem würde das für den Benchmark bedeuten, dass man weggehen kann von der ursprünglichen Idee (Datensatz → Vorhersage → Metriken zur Bewertung). Stattdessen kann man hingehen zu einer Simulation in einer Closed-Loop-Umgebung, in der die Simulation immer wieder durchlaufen wird und so ein realitätsnäherer Regelungs-Benchmark abgebildet werden kann.
+Die Schwierigkeit gestaltet sich in...
+Modellparameter-Abgleich
+Die grundlegenden elektrischen Parameter wie Polpaarzahl, Statorwiderstand, Induktivitäten und Permanentmagnetfluss wurden bereits zwischen MATLAB und Python abgeglichen. Allerdings könnten die mechanischen Parameter wie Trägheitsmoment und Reibungskoeffizient in GEM andere Standardwerte haben als in der MATLAB-Simulation. Diese beeinflussen das dynamische Verhalten des Motors und müssen noch geprüft werden.
+Regler-Implementierung
+Ein kritischer Punkt ist die Übereinstimmung der PI-Regler-Parameter. In MATLAB sind die Gains explizit im Simulink-Modell definiert, während GEM diese automatisch berechnet. Auch wenn beide Simulationen die Entkopplung zwischen d- und q-Achse implementieren, können Unterschiede in der Anti-Windup-Implementierung oder der Spannungsbegrenzung zu abweichenden Ergebnissen führen.
+Anfangsbedingungen
+Die Simulationen starten möglicherweise mit unterschiedlichen Anfangszuständen. Während MATLAB typischerweise bei null Strom beginnt, kann GEM mit zufälligen oder vordefinierten Werten starten. Auch die initiale Drehzahl und der elektrische Winkel können abweichen, was den direkten Vergleich der Zeitverläufe erschwert.
+Koordinatentransformationen
+MATLAB arbeitet intern direkt mit den dq-Spannungen, während GEM die Stellgrößen als ABC-Phasenspannungen erwartet. Die im Python-Script implementierte Rücktransformation von ABC nach dq für das Logging könnte eine Fehlerquelle darstellen und muss validiert werden.
+Zeitdiskretisierung
+Unterschiedliche numerische Solver können zu leicht unterschiedlichen Ergebnissen führen. MATLAB verwendet möglicherweise einen anderen Integrationsalgorithmus als das einfache Euler-Verfahren in GEM, was besonders bei schnellen transienten Vorgängen sichtbar werden könnte.
+Was noch fehlt
+Validierungs-Framework
+Es fehlt noch ein systematisches Framework zum Vergleich beider Simulationen. Dieses sollte Metriken wie den mittleren absoluten Fehler, den maximalen Fehler und die Korrelation zwischen den Zeitverläufen berechnen können.
+Feste Test-Szenarien
+Für einen aussagekräftigen Vergleich müssen standardisierte Testfälle definiert werden. Diese sollten verschiedene Betriebspunkte abdecken wie Normalbetrieb, Nennstrom, hohe Drehzahlen, Feldschwächung und Sprung-Antworten.
+Closed-Loop Benchmark-Architektur
+Für den eigentlichen Benchmark muss eine Architektur entwickelt werden, in der das trainierte neuronale Netz als Controller in die GEM-Simulation eingebunden wird. Dabei sollen Metriken wie Einschwingzeit, Überschwingen, stationäre Regelabweichung, Energieverbrauch und Rechenzeit erfasst werden.
+NN-Controller Integration
+Das in Edge Impulse trainierte Modell muss als Python-Modul exportiert und als Controller-Klasse implementiert werden, die die gleiche Schnittstelle wie der konventionelle PI-Regler bietet.
+Nächste Schritte
+Als erstes müssen die PI-Gains aus dem MATLAB-Modell extrahiert und in der Python-Simulation gesetzt werden. Danach sollten feste Testparameter definiert werden anstatt zufälliger Werte, um einen direkten Vergleich zu ermöglichen. Mit einem Vergleichs-Script kann dann systematisch geprüft werden, ob beide Simulationen bei gleichen Eingaben die gleichen Ausgaben produzieren. Erst wenn diese Validierung erfolgreich ist, macht es Sinn, die 1000 Trainings-Simulationen zu generieren und das Edge Impulse Training durchzuführen. Abschließend kann der trainierte NN-Controller in der Closed-Loop-Umgebung getestet werden.
