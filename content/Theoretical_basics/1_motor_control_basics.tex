@@ -1,0 +1,35 @@
+\section{Fundamentals of Linear Control Systems}
+\label{sec:control_basics}
+
+Defining the specific dynamics of the \gls{pmsm} requires establishing the principles of the linear control strategies employed. 
+Industrial drive systems predominantly rely on closed-loop feedback to enforce stability and accuracy against external disturbances and parameter variations \cite{follinger_regelungstechnik_2022}.
+
+\subsection{The PID Controller Structure}
+Automation technology favors the PID algorithm for its structural simplicity and robustness. 
+The controller computes an actuation value  from the control error , deriving the output through three parallel terms:
+
+\begin{equation}
+u(t) = \underbrace{K_p \cdot e(t)}*{Proportional} + \underbrace{K_i \int*{0}^{t} e(\tau) d\tau}*{Integral} + \underbrace{K_d \frac{d e(t)}{dt}}*{Derivative}
+\label{eq:pid_time_domain}
+\end{equation}
+
+Here, , , and  represent the tuning coefficients. Each component targets a specific aspect of the error dynamics:
+\begin{itemize}
+\item \textbf{Proportional (P):} Reacts to instantaneous error. High gain  increases response speed but risks overshoot and fails to eliminate steady-state error in non-integrating plants.
+\item \textbf{Integral (I):} Addresses the history of the error. This term forces steady-state error to zero, ensuring the actual current matches the reference exactly even against resistive losses \cite{tieste_keine_2015}.
+\item \textbf{Derivative (D):} Responds to the rate of change, effectively predicting future error trajectory.
+\end{itemize}
+
+\subsection{PI Controllers for Motor Control}
+Electric current control rarely employs the full PID structure. The derivative term is systematically omitted to form a \gls{pi} controller. High-frequency measurement noise inherently plagues power electronic current sensors. Differentiating this signal amplifies the stochastic noise, driving the inverter into erratic and aggressive actuation (). This causes excessive thermal stress and mechanical vibration without yielding performance gains \cite{schroder_elektrische_2015}.
+
+The simulation model therefore employs a parallel discrete transfer function:
+\begin{equation}
+G_{PI}(z) = K_p + K_i \frac{T_s}{z-1}
+\end{equation}
+Where  denotes the sampling time of the digital control system.
+
+\subsection{Saturation and Integrator Windup}
+Linear control theory assumes infinite actuator headroom. Physical systems do not. When a \gls{pi} controller demands voltage beyond the DC-link limit (), the actuator saturates. The feedback loop breaks, yet the integral term blindly accumulates error during the saturation event—a phenomenon termed \textbf{Integrator Windup} \cite{zacher_regelungstechnik_2022}.
+
+Upon returning to the linear range, this inflated integral value forces significant overshoot while the controller "unwinds" the error. \textbf{Anti-Windup} strategies mitigate this risk. The simulation's "Space Vector Limitation" block clamps the output and halts integration when the limit is reached, preserving the dynamic stability required for valid Controller Cloning target data.

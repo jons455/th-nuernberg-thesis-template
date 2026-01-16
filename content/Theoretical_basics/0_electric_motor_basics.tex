@@ -1,0 +1,75 @@
+\chapter{Theoretical Foundations and State of the Art}
+\label{ch:foundations}
+
+This chapter establishes the physical and mathematical bedrock necessary for understanding the control of \gls{pmsm}. It transitions from the mechanical topology—specifically the magnetic anisotropy of Interior Permanent Magnet (IPM) machines—to the coordinate transformations that render these complex non-linear systems controllable.
+
+\section{Fundamentals of Permanent Magnet Synchronous Motors}
+\label{sec:pmsm_fundamentals}
+
+The \gls{pmsm} is the actuator of choice for high-performance traction and industrial drives due to its superior power density and dynamic controllability \cite{schroder_elektrische_2015}. Unlike induction machines, the \gls{pmsm} generates magnetic flux via rotor-mounted permanent magnets rather than induced currents, eliminating rotor copper losses and significantly improving partial-load efficiency \cite{gemasmer_effiziente_2015}.
+
+\subsection{Electromagnetic Topology}
+\label{subsec:topology}
+
+The machine consists of a stationary stator and a rotating rotor, interacting through a magnetic field in the air gap.
+
+\textbf{The Stator} follows classic AC machine design principles. It houses a distributed three-phase winding system ($U, V, W$) spatially offset by $120^\circ$. When energized with sinusoidal currents, these windings generate a rotating magnetic space vector that drags the rotor into synchronism \cite{schroder_elektrische_2015}.
+
+\textbf{The Rotor} architecture defines the machine's control characteristics. While Surface-Mounted (SPM) designs offer magnetic symmetry, high-dynamic applications typically employ the \textbf{Interior Permanent Magnet (IPM)} topology. In this configuration, magnets are embedded within the rotor laminations.
+
+
+This embedding creates a magnetic asymmetry, or saliency. The magnetic flux encounters different reluctance paths depending on its orientation relative to the rotor:
+\begin{itemize}
+    \item \textbf{d-axis (Direct):} Aligned with the magnetic pole. The flux passes through the magnet material ($\mu_r \approx 1$), resulting in a larger effective air gap and lower inductance ($L_d$).
+    \item \textbf{q-axis (Quadrature):} Aligned with the iron inter-polar region. The flux travels primarily through the high-permeability iron, resulting in higher inductance ($L_q$) \cite{ackermann_optimale_2012}.
+\end{itemize}
+
+This inequality ($L_q > L_d$) is critical. It allows the IPM to generate an additional torque component—the \textbf{reluctance torque}—which supplements the primary magnet alignment torque. Efficient utilization of this reluctance component is essential for maximizing the torque-per-ampere ratio in modern drive cycles \cite{gemasmer_effiziente_2015}. However, this saliency also introduces cross-coupling effects that complicate the control structure, necessitating precise parameter identification to maintain stability \cite{kellner_parameter_2012}.
+
+\section{Coordinate Transformations}
+\label{sec:transformations}
+
+Direct control of the \gls{pmsm} in the stationary $abc$-frame is computationally expensive and mathematically intractable for linear controllers. The time-varying coupling between stator and rotor fields results in differential equations with coefficients that depend on the rotor position angle $\theta_{el}$ \cite{schroder_elektrische_2015}. To resolve this, the system is mathematically projected into a rotor-fixed reference frame, transforming the AC phase quantities into constant DC values in steady state.
+
+\subsection{Clarke Transformation ($abc \to \alpha\beta$)}
+\label{subsec:clarke}
+
+The Clarke transformation projects the three-phase quantities (currents $\underline{i}_s$, voltages $\underline{u}_s$) onto a stationary, two-phase orthogonal system ($\alpha\beta$). The $\alpha$-axis aligns with the magnetic axis of phase $U$. Assuming a balanced system where the zero-sequence component is negligible ($i_u + i_v + i_w = 0$), the transformation is defined as:
+
+\begin{equation}
+    \begin{bmatrix} i_\alpha \\ i_\beta \end{bmatrix} = \frac{2}{3} 
+    \begin{bmatrix} 
+        1 & -\frac{1}{2} & -\frac{1}{2} \\
+        0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} 
+    \end{bmatrix}
+    \begin{bmatrix} i_u \\ i_v \\ i_w \end{bmatrix}
+    \label{eq:clarke}
+\end{equation}
+
+The scalar factor $\frac{2}{3}$ ensures amplitude invariance, preserving the magnitude of the physical current space vector \cite{zacher_regelungstechnik_2022}.
+
+\subsection{Park Transformation ($\alpha\beta \to dq$)}
+\label{subsec:park}
+
+While the $\alpha\beta$ frame reduces dimensionality, the quantities remain sinusoidal. The Park transformation eliminates this time dependence by rotating the coordinate system at the synchronous electrical angular velocity $\omega_{el}$, aligning the $d$-axis with the permanent magnet flux vector \cite{schroder_elektrische_2015}.
+
+The projection into the rotating $dq$-frame is governed by the rotation matrix:
+
+\begin{equation}
+    \begin{bmatrix} i_d \\ i_q \end{bmatrix} = 
+    \begin{bmatrix} 
+        \cos(\theta_{el}) & \sin(\theta_{el}) \\
+        -\sin(\theta_{el}) & \cos(\theta_{el}) 
+    \end{bmatrix}
+    \begin{bmatrix} i_\alpha \\ i_\beta \end{bmatrix}
+    \label{eq:park}
+\end{equation}
+
+
+This transformation provides the foundation for Field-Oriented Control (FOC):
+\begin{itemize}
+    \item \textbf{$i_d$ (Flux Component):} Controls the magnetization state. In IPMs, injecting negative $i_d$ current ("field weakening") counteracts the magnet flux, allowing operation above nominal speed \cite{ackermann_optimale_2012}.
+    \item \textbf{$i_q$ (Torque Component):} Generates torque orthogonal to the flux.
+\end{itemize}
+
+Ideally, this decomposition allows the \gls{pmsm} to be controlled like a separately excited DC machine. However, in physical IPM implementations, parameter mismatch and inductance asymmetry create significant cross-coupling between the $d$ and $q$ axes. Uncompensated, these coupling terms manifest as disturbances that degrade dynamic performance, requiring advanced decoupling strategies to maintain current tracking accuracy \cite{li_current_2024, tasnim_mitigating_2024}.
